@@ -27,7 +27,6 @@ LINKS = [
     {'name':'纪录片','path':'/jilupian/'},
     {'name':'动画片','path':'/donghuapian/'},
     {'name':'电视剧','path':'/dianshiju/'},
-    {'name':'福利','path':'/fuli/'},
     {'name':'综艺','path':'/ZongYi/'},
 ]
 
@@ -88,7 +87,7 @@ def get_videos(soup):
 def get_sources(soup):
     """获取播放源列表"""
     sources = []
-    source_title = soup.find('div', class_='context').find('h3', text='播放地址（无插件 极速播放）')
+    source_title = soup.find('div', class_='context').find('h3', text='播放地址（无需安装插件）')
     if source_title is not None:
         source_element = source_title.parent
         source_items = source_element.find_all('a')
@@ -179,7 +178,6 @@ def play_video(path):
         dialog = xbmcgui.Dialog()
         dialog.ok('错误提示', '获取播放地址失败')
         return
-
     play_item = xbmcgui.ListItem(path=play_path)
     xbmcplugin.setResolvedUrl(HANDLE, True, listitem=play_item)
 
