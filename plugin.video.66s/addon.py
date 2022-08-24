@@ -99,8 +99,8 @@ def get_sources(soup):
     return sources
 
 
-def get_play(path):
-    """获取播放地址"""
+def get_stream_url(path):
+    """获取视频流URL"""
     resp = get_response(path)
     it = re.finditer(r"a:\'(.*)\'", resp)
     try:
@@ -173,13 +173,11 @@ def list_sources(category, path):
 
 
 def play_video(path):
-    play_path = get_play(path)
-    if not play_path:
-        dialog = xbmcgui.Dialog()
-        dialog.ok('错误提示', '获取播放地址失败')
-        return
-    play_item = xbmcgui.ListItem(path=play_path)
-    xbmcplugin.setResolvedUrl(HANDLE, True, listitem=play_item)
+    stream_url = get_stream_url(path)
+    if stream_url:
+        xbmcplugin.setResolvedUrl(HANDLE, True, xbmcgui.ListItem(path=stream_url))
+    else:
+        xbmcplugin.setResolvedUrl(HANDLE, False, xbmcgui.ListItem())
 
 
 def router(paramstring):
